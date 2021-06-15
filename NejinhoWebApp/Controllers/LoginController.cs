@@ -63,7 +63,7 @@ namespace NejinhoWebApp.Controllers
                                                                 IsPersistent = manterLogado == "on" ? true : false
                                                             });
                 HttpContext.Session.SetString("Nome",user.Nome);
-                HttpContext.Session.SetInt32("Id",user.Id);
+                HttpContext.Session.SetString("Id",user.Id.ToString());
 
 
                 return Redirect("/Home/Index");

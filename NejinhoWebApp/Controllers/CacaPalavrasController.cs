@@ -55,7 +55,7 @@ namespace NejinhoWebApp.Controllers
                 Nome = titulo,
                 Disponivel = true,
                 GUID = Guid.NewGuid().ToString(),
-                IdUsuario = 1,//TODO
+                IdUsuario = Convert.ToInt32(HttpContext.Session.GetString("Id")),//TODO
                 Q1 = q1,
                 Q2 = q2,
                 Q3 = q3,
@@ -71,17 +71,31 @@ namespace NejinhoWebApp.Controllers
 
             _context.AtividadeCacaPalavras.Add(atividadeCacaPalavras);
 
-            _context.SaveChanges();
-
             ContentResult result = new ContentResult();
-            result.StatusCode = 200;
 
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                result.StatusCode = 400;
+                result.ContentType = "application/json";
+                result.Content = JsonConvert.SerializeObject(new { mensagem = "Ocorreu um erro inesperado!" }, Formatting.None,
+                                                                new JsonSerializerSettings()
+                                                                {
+                                                                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                                                });
+                return result;
+            }
+
+            result.StatusCode = 200;
             result.ContentType = "application/json";
             result.Content = JsonConvert.SerializeObject(new {mensagem = "Atividade Cadastrada com sucesso!" }, Formatting.None,
-                    new JsonSerializerSettings()
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    });
+                                                            new JsonSerializerSettings()
+                                                            {
+                                                                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                                            });
 
             return result;
         }
