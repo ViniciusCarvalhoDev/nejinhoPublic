@@ -14,5 +14,6 @@ namespace NejinhoWebApp.Models
         public int IdUsuario { get; set; }
         public Usuario Usuario { get; set; }
         public bool Disponivel { get; set; }
+        public string GUID { get; set; }
     }
 }

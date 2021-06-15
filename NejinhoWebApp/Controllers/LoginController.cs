@@ -76,7 +76,6 @@ namespace NejinhoWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> LogOutAsync()
         {
-
             if (User.Identity.IsAuthenticated)
             {
                 await AuthenticationHttpContextExtensions.SignOutAsync(HttpContext);

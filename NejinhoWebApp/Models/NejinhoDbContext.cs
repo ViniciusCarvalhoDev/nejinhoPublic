@@ -10,6 +10,7 @@ namespace NejinhoWebApp.Models
     {
         public DbSet<Usuario> Pessoas { get; set; }
         public DbSet<Atividade> Atividades { get; set; }
+        public DbSet<AtividadeCacaPalavras> AtividadeCacaPalavras { get; set; }
 
         public NejinhoDbContext()
         {

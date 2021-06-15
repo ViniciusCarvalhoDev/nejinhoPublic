@@ -32,6 +32,8 @@ namespace NejinhoWebApp
                    options.UseNpgsql(
                        Configuration.GetConnectionString("ConexaoPostgree")));
             services.AddRazorPages();
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
             services.AddMvc()
                 .AddSessionStateTempDataProvider();
             services.AddSession();
