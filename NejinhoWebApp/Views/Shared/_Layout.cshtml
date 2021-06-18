@@ -86,13 +86,27 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper iframe-mode" data-widget="iframe" data-loading-screen="750">
             <div class="tab-content">
-                @RenderBody()
-                <div class="tab-loading">
-                    <div>
-                        <h2 class="display-4">Carregando... <i class="fa fa-sync fa-spin"></i></h2>
+                <!-- Main content -->
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <!-- Default box -->
+                                @RenderBody()
+                            </div>
+                        </div>
                     </div>
+                </section>
+                <!-- /.content -->
+            </div>
+            <!-- /.content-wrapper -->
+           
+            <div class="tab-loading">
+                <div>
+                    <h2 class="display-4">Carregando... <i class="fa fa-sync fa-spin"></i></h2>
                 </div>
             </div>
+        </div>
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">

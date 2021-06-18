@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NejinhoWebApp.Controls;
+using NejinhoWebApp.Model.API;
 using NejinhoWebApp.Models;
 using Newtonsoft.Json;
 using System;
@@ -35,6 +38,24 @@ namespace NejinhoWebApp.Controllers
             }
 
             return View("NovoCacaPalavras");
+        }
+
+        [HttpGet]
+        public async Task<ContentResult> ListarAtividadesAsync(JqueryDatatableParam param)
+        {
+            DataTableRequestControl datatable = new DataTableRequestControl(_context);
+
+            string[] columns = { "Nome", "Nome", "Data", "Disponivel", "Id"};
+            bool[] searchColumns = { true, true, true, true, false };
+
+            IQueryable<AtividadeCacaPalavras> query = _context.AtividadeCacaPalavras.Include(at => at.Usuario);
+            ContentResult result = new ContentResult();
+
+            result.StatusCode = 200;
+            result.ContentType = "application/json";
+            result.Content = await DataTableRequestControl.Serialize(param, query, columns, searchColumns);
+
+            return result;
         }
 
         [HttpPost]

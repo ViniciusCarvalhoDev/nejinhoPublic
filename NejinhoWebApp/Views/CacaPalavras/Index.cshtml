@@ -2,4 +2,102 @@
     ViewData["Title"] = "Caça Palavras";
 }
 
-<p>@Html.ActionLink("Este link se parece como um button", "Novo", "CacaPalavras", null, new { @class = "btn btn-primary" })</p>
+<!-- /.row -->
+<div class="row m-2">
+    <div class=" col-12 row">
+        <div class="col-9">
+
+        </div>
+        <div class="col-3">
+            <p>@Html.ActionLink("Cadastrar Novo Caça-Palavras", "Novo", "CacaPalavras", null, new { @class = "btn btn-primary" })</p>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header" style="margin-bottom:15px;">
+                <h1 class="card-title"><b>Caça Palavras</b></h1>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-3">
+                <table id="atividades" class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Responsável</th>
+                            <th>Data</th>
+                            <th>Disponível</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+<!-- /.row -->
+@section Scripts{
+
+    <link rel="stylesheet" type="text/css" href="~/lib/jquery-datatable/jquery.dataTables.min.css">
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(function () {
+
+            $('#atividades').DataTable({
+                "processing": true,
+                "bServerSide": true,
+                "sAjaxSource": "/CacaPalavras/ListarAtividades",
+                "bSearchable": true,
+                "order": [[0, 'asc']],
+                oLanguage: {
+                    sProcessing: " "
+                },
+                language: {
+                    url: "/lib/jquery-datatable/portugues.json"
+                },
+                "columns": [
+                    {
+                        "data": "Nome",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "Usuario.Nome",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "Data",
+                        "autoWidth": true,
+                        "searchable": true,
+                        render: function (data) {
+                            return formatDateFromCSgarp(new Date(data));
+                        }
+                    },
+                    {
+                        "data": "Disponivel",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "Id",
+                        "autoWidth": true,
+                        "searchable": false,
+                        "orderable": false,
+                        render: function (data) {
+                            var acao = '<a class="mr-2" title="Editar" href="#id=' + data + '">Editar</a>' +
+                                '<a title="Detalhes" href="#id=' + data + '">Detalhes</a>';
+                            return acao;
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+
+
+
+}
