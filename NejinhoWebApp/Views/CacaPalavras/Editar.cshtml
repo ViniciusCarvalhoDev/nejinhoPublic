@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Novo Caça Palavras";
+    ViewData["Title"] = "Editar Caça Palavras";
 }
 
 <div class="container">
@@ -18,7 +18,7 @@
                     <div class="col-4">
 
                     </div>
-                    
+
                 </div>
                 <div class="card-body row">
                     <div class="col-1">
@@ -135,7 +135,7 @@
                 </div>
                 <div class="col-12">
                     <div class="col-12 row">
-                        
+
                         <div class="col-6">
                             <div class="col-12">
                                 <label>a) </label> <input type="text" class="inputPalavras" value="" name="palavra" maxlength="15" size="15" />
@@ -164,7 +164,7 @@
                         </div>
                     </div>
                     <div>
-                        <button class="btn btn-primary ali m-2" value="Cadastrar" onclick="CadastrarAtividade()" id="cadastrarAtividade">Cadastrar Atividade</button>
+                        <button class="btn btn-primary ali m-2" value="Cadastrar" onclick="CadastrarAtividade()" id="cadastrarAtividade">Editar Atividade</button>
                     </div>
                 </div>
             </div>
@@ -184,64 +184,112 @@
         margin-left: 25px;
     }
 </style>
-
 @section Scripts{
-<script>
-    function CadastrarAtividade() {
-
+    <script>
+    $(function () {
         var inputs = document.getElementsByName("input");
         var questoes = document.getElementsByName("palavra");
-        var titulo = document.getElementsByName("titulo")[0].value;
-
-        var palavras = "";
-        var q1 = questoes[0].value;
-        var q2 = questoes[1].value;
-        var q3 = questoes[2].value;
-        var q4 = questoes[3].value;
-        var q5 = questoes[4].value;
-        var q6 = questoes[5].value;
-        var q7 = questoes[6].value;
-        var q8 = questoes[7].value;
-        var q9 = questoes[8].value;
-        var q10 = questoes[9].value;
-
-        for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].value == "") {
-                palavras += "-";
-            } else {
-                palavras += inputs[i].value;
-            }
-        }
+        var titulo = document.getElementsByName("titulo")[0];
 
         $.ajax({
-            type: 'POST',
-            url: "/CacaPalavras/CadastrarAtividades",
+            type: 'GET',
+            url: "/CacaPalavras/RecuperaCacaPalavras",
             data: {
-                palavras: palavras,
-                q1: q1,
-                q2: q2,
-                q3: q3,
-                q4: q4,
-                q5: q5,
-                q6: q6,
-                q7: q7,
-                q8: q8,
-                q9: q9,
-                q10: q10,
-                titulo: titulo,
+                id: "@Model",
                 __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
             },
             dataType: "json",
             success: function (retorno) {
-                alert("Dados Atualizados com sucesso!");
-                location.reload();
+                console.log(retorno)
+                console.log(retorno.Q1)
+
+               questoes[0].value = retorno.Q1
+               questoes[1].value = retorno.Q2
+               questoes[2].value = retorno.Q3
+               questoes[3].value = retorno.Q4
+               questoes[4].value = retorno.Q5
+               questoes[5].value = retorno.Q6
+               questoes[6].value = retorno.Q7
+               questoes[7].value = retorno.Q8
+               questoes[8].value = retorno.Q9
+               questoes[9].value = retorno.Q10
+                titulo.value = retorno.Nome
+
+                for (var i = 0; i < retorno.CacaPalavras.length; i++) {
+
+                    if (retorno.CacaPalavras.charAt(i) != '-') {
+                        inputs[i].value = retorno.CacaPalavras.charAt(i);
+                    }
+                    
+                }
+
             },
             error: function (retorno) {
                 alert("Ocorreu um erro inesperado");
                 location.reload();
             }
         });
-    }
-</script>
 
+    });
+    </script>
+
+
+    <script>
+        function CadastrarAtividade() {
+
+            let inputs = document.getElementsByName("input");
+            let questoes = document.getElementsByName("palavra");
+            let titulo = document.getElementsByName("titulo")[0].value;
+
+            let palavras = "";
+            let q1 = questoes[0].value;
+            let q2 = questoes[1].value;
+            let q3 = questoes[2].value;
+            let q4 = questoes[3].value;
+            let q5 = questoes[4].value;
+            let q6 = questoes[5].value;
+            let q7 = questoes[6].value;
+            let q8 = questoes[7].value;
+            let q9 = questoes[8].value;
+            let q10 = questoes[9].value;
+
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].value == "") {
+                    palavras += "-";
+                } else {
+                    palavras += inputs[i].value;
+                }
+            }
+
+            $.ajax({type: 'POST',
+                    url: "/CacaPalavras/EditarAtividades",
+                   data: {
+                   palavras: palavras,
+                        q1: q1,
+                        q2: q2,
+                        q3: q3,
+                        q4: q4,
+                        q5: q5,
+                        q6: q6,
+                        q7: q7,
+                        q8: q8,
+                        q9: q9,
+                        q10: q10,
+                        titulo: titulo,
+                       __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(),
+                       id: "@Model"
+                },
+                dataType: "json",
+                    success: function (retorno) {
+                        alert("Dados Atualizados com sucesso!");
+                        location.reload();
+                    },
+                error: function (retorno) {
+                    alert("Ocorreu um erro inesperado");
+                    location.reload();
+                }
+            });
+        }
+
+    </script>
 }

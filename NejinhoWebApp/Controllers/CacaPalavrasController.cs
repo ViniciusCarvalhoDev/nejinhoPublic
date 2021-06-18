@@ -41,6 +41,44 @@ namespace NejinhoWebApp.Controllers
         }
 
         [HttpGet]
+        public IActionResult Editar(int id)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect("/Login/Index");
+            }
+
+            string cacaPalavrasId = Convert.ToString(id);
+
+            return View("Editar",cacaPalavrasId);
+        }
+
+        [HttpGet]
+        public async Task<ContentResult> RecuperaCacaPalavrasAsync(int id)
+        {
+
+            AtividadeCacaPalavras atividade = _context.AtividadeCacaPalavras.Find(id);
+
+            ContentResult result = new ContentResult();
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                result.StatusCode = 400;
+                return result;
+            }
+
+            result.StatusCode = 200;
+            result.ContentType = "application/json";
+            result.Content  = JsonConvert.SerializeObject(atividade, Formatting.None,
+                    new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+
+            return result;
+        }
+
+        [HttpGet]
         public async Task<ContentResult> ListarAtividadesAsync(JqueryDatatableParam param)
         {
             DataTableRequestControl datatable = new DataTableRequestControl(_context);
@@ -76,7 +114,7 @@ namespace NejinhoWebApp.Controllers
                 Nome = titulo,
                 Disponivel = true,
                 GUID = Guid.NewGuid().ToString(),
-                IdUsuario = Convert.ToInt32(HttpContext.Session.GetString("Id")),//TODO
+                IdUsuario = Convert.ToInt32(HttpContext.Session.GetString("Id")),
                 Q1 = q1,
                 Q2 = q2,
                 Q3 = q3,
@@ -98,8 +136,9 @@ namespace NejinhoWebApp.Controllers
             {
                 _context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                string ex = e.Message;
                 result.StatusCode = 400;
                 result.ContentType = "application/json";
                 result.Content = JsonConvert.SerializeObject(new { mensagem = "Ocorreu um erro inesperado!" }, Formatting.None,
@@ -113,6 +152,64 @@ namespace NejinhoWebApp.Controllers
             result.StatusCode = 200;
             result.ContentType = "application/json";
             result.Content = JsonConvert.SerializeObject(new {mensagem = "Atividade Cadastrada com sucesso!" }, Formatting.None,
+                                                            new JsonSerializerSettings()
+                                                            {
+                                                                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                                            });
+
+            return result;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditarAtividades(string palavras, string q1,
+                                                   string q2, string q3,
+                                                   string q4, string q5,
+                                                   string q6, string q7,
+                                                   string q8, string q9,
+                                                   string q10, string titulo, int id)
+        {
+
+            AtividadeCacaPalavras atividade = _context.AtividadeCacaPalavras.Find(id);
+
+            atividade.Q1 = q1;
+            atividade.Q2 = q2;
+            atividade.Q3 = q3;
+            atividade.Q4 = q4;
+            atividade.Q5 = q5;
+            atividade.Q6 = q6;
+            atividade.Q7 = q7;
+            atividade.Q8 = q8;
+            atividade.Q9 = q9;
+            atividade.Q1 = q10;
+
+            atividade.CacaPalavras = palavras;
+
+
+            _context.Attach(atividade).State = EntityState.Modified;
+
+            ContentResult result = new ContentResult();
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                string ex = e.Message;
+                result.StatusCode = 400;
+                result.ContentType = "application/json";
+                result.Content = JsonConvert.SerializeObject(new { mensagem = "Ocorreu um erro inesperado!" }, Formatting.None,
+                                                                new JsonSerializerSettings()
+                                                                {
+                                                                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                                                });
+                return result;
+            }
+
+            result.StatusCode = 200;
+            result.ContentType = "application/json";
+            result.Content = JsonConvert.SerializeObject(new { mensagem = "Atividade Cadastrada com sucesso!" }, Formatting.None,
                                                             new JsonSerializerSettings()
                                                             {
                                                                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
