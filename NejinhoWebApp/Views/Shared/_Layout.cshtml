@@ -18,7 +18,7 @@
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="~/lib/overlayScrollbars/css/OverlayScrollbars.min.css">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed" data-panel-auto-height-mode="height">
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
@@ -83,32 +83,22 @@
             </div>
             <!-- /.sidebar -->
         </aside>
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper iframe-mode" data-widget="iframe" data-loading-screen="750">
-            <div class="tab-content">
-                <!-- Main content -->
-                <section class="content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12">
-                                <!-- Default box -->
-                                @RenderBody()
-                            </div>
+        <div class="content-wrapper">
+            <!-- Main content -->
+            <section class="content">
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                           @RenderBody()
                         </div>
                     </div>
-                </section>
-                <!-- /.content -->
-            </div>
-            <!-- /.content-wrapper -->
-           
-            <div class="tab-loading">
-                <div>
-                    <h2 class="display-4">Carregando... <i class="fa fa-sync fa-spin"></i></h2>
                 </div>
-            </div>
-        </div>
+            </section>
+            <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
+        
         <footer class="main-footer">
             <strong>Núcleo de Educação de Jovens e Adultos (Neja) &copy; 2021</strong>
             Todos os direitos reservados.
@@ -116,35 +106,31 @@
                 <b>Versão</b> 1.0.0
             </div>
         </footer>
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
-    </div>
-    <!-- ./wrapper -->
+</div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <!-- overlayScrollbars -->
-    <script src="~/lib/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="~/js/demo.js"></script>
-    <script>
-        function rediricionarParaNovoCacaPalavras() {
-            window.location.href = "/CacaPalavras";
-        }
+        <!-- ./wrapper -->
 
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+        <!-- overlayScrollbars -->
+        <script src="~/lib/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="~/js/adminlte.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="~/js/demo.js"></script>
+        <script>
+            function rediricionarParaNovoCacaPalavras() {
+                window.location.href = "/CacaPalavras";
+            }
 
-    @await RenderSectionAsync("Scripts", required: false)
+            $.widget.bridge('uibutton', $.ui.button)
+        </script>
+
+        @await RenderSectionAsync("Scripts", required: false)
 
 </body>
 </html>
